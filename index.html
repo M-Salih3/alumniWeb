@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wafy alumni Points Table</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        padding-top: 100px;
+        background-color: #f4f4f4;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+        font-size: 24px;
+      }
+      .m-hd {
+        text-align: center;
+        color: #333;
+        font-size: 60px;
+        font-family: "Pacifico", serif;
+        font-weight: 100;
+        font-style: normal;
+        margin-bottom: 0;
+      }
+      h2 {
+        text-align: center;
+        margin-top: -10px;
+        font-size: 18px;
+      }
+      .table-container {
+        width: 100%;
+        overflow-x: auto;
+        margin: 0 auto;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #333;
+        color: #fff;
+      }
+      tr:hover {
+        background-color: #f5f5f5;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      footer{
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        position: fixed;
+      }
+      /* Responsive Styles */
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 20px;
+        }
+        th,
+        td {
+          padding: 10px;
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="m-hd">Kurrah</h1>
+    <h2>Football Tournament</h2>
+    <h1>Point Table</h1>
+
+    <div class="table-container">
+      <table id="pointsTable">
+        <thead>
+          <tr>
+            <th>Team Name</th>
+            <th>W</th>
+            <th>D</th>
+            <th>L</th>
+            <th>GD</th>
+            <th>P</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows will be populated dynamically -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+        <p>Made with ❤️ by <a href="https://mskccv.vercel.app/">mskc</a></p>
+    </div>
+
+    <script>
+      // Replace this URL with your published Google Sheet CSV link
+      const googleSheetURL =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFI1rNMlb6GsSdqlKnj2MaF1NIiEDOSFqAtbpQ-eWUM6b7rfRtRBmZzm4PdcS_fp52gOclRjKfGepv/pub?gid=0&single=true&output=csv";
+
+      // Fetch data from Google Sheet
+      async function fetchData() {
+        try {
+          const response = await fetch(googleSheetURL);
+          const csvData = await response.text();
+
+          // Parse CSV data
+          const rows = csvData.split("\n").slice(1); // Remove header row
+          const tableBody = document.querySelector("#pointsTable tbody");
+
+          // Clear existing rows
+          tableBody.innerHTML = "";
+
+          // Populate table rows
+          rows.forEach((row) => {
+            const columns = row.split(",");
+            const tr = document.createElement("tr");
+            columns.forEach((column) => {
+              const td = document.createElement("td");
+              td.textContent = column.trim();
+              tr.appendChild(td);
+            });
+            tableBody.appendChild(tr);
+          });
+        } catch (error) {
+          console.error("Error fetching or parsing data:", error);
+        }
+      }
+
+      // Fetch data on page load
+      fetchData();
+    </script>
+  </body>
+</html>
